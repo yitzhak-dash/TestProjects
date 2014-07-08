@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.Practices.Unity;
 
 namespace Configurator
 {
@@ -20,6 +21,8 @@ namespace Configurator
 
         static void Main(string[] args)
         {
+            var container = new UnityContainer();
+
             if (args == null || !args.Any())
                 return;
             var command = args[0];
@@ -42,8 +45,6 @@ namespace Configurator
             ChangeEndpointAddress(ConfigurationManager.AppSettings[Localhost], ConfigurationManager.AppSettings[Remotehost]);
 
         }
-
-
 
         public static string GetEndpointAddress()
         {
