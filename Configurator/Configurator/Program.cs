@@ -29,6 +29,8 @@ namespace Configurator
 
             //var command = "local";
 
+            var t = GetEndpointAddress().Split(new[] { "://", ":" }, StringSplitOptions.RemoveEmptyEntries)[1];
+
             if (command == "local")
                 ToLocalhost();
             if (command == "remote")

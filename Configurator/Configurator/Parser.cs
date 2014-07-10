@@ -19,11 +19,10 @@ namespace Configurator
         {
             var list = args as IList<string> ?? args.ToList();
 
-            if (args == null || !list.Any())
+            if (args == null || list.Count < 2)
                 return new HelpCommand();
 
-            var command = _factory.Create(list[0]);
-            command.SetContext(new CommandContext().Add("To", list[1]));
+            var command = _factory.Create(list[0], list[1]);
 
             return command;
         }

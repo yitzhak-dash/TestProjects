@@ -8,10 +8,17 @@ namespace Configurator
 {
     public class CommandFactory : ICommandFactory
     {
-        public ICommand Create(string str)
+        private readonly IXmlConfigProvider _provider;
+
+        public CommandFactory(IXmlConfigProvider provider)
         {
-            if (str == "endpoint")
-                return new ChangeEndpointHostCommand();
+            _provider = provider;
+        }
+
+        public ICommand Create(string commandStr, string commandArg)
+        {
+            if (commandStr == "endpoint")
+                return new ChangeEndpointHostCommand(commandArg, _provider);
 
             return new HelpCommand();
         }

@@ -9,7 +9,5 @@ namespace Configurator
     {
         string Name { get; }
         void Execute();
-
-        void SetContext(CommandContext commandContext);
     }
 }

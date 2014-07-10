@@ -8,15 +8,20 @@ namespace Configurator
 {
     public class ChangeEndpointHostCommand : ICommand
     {
-        private CommandContext _commandContext;
-        public void Execute()
+        private readonly string _commandArg;
+        private readonly IXmlConfigProvider _provider;
+        private const string NodePath = "//system.serviceModel//client//endpoint";
+        private const string NodeAttribute = "address";
+
+        public ChangeEndpointHostCommand(string commandArg,IXmlConfigProvider provider)
         {
-            throw new NotImplementedException();
+            _commandArg = commandArg;
+            _provider = provider;
         }
 
-        public void SetContext(CommandContext commandContext)
+        public void Execute()
         {
-            _commandContext = commandContext;
+           
         }
 
         public string Name
