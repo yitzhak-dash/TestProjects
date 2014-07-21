@@ -1,13 +1,10 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Xml;
+using Configurator.DomainModel;
 
 namespace Configurator
 {
-    public interface IXmlConfigProvider
-    {
-        void ChangeConfigXml(string nodePath, string attribute, string newValue, string oldValue);
-    }
-
     public class XmlConfigProvider : IXmlConfigProvider
     {
         private readonly string _filePath;
@@ -17,7 +14,7 @@ namespace Configurator
             _filePath = filePath;
         }
 
-        public XmlDocument LoadConfigDocument()
+        public XmlDocument LoadConfiguration()
         {
             try
             {
@@ -31,11 +28,11 @@ namespace Configurator
             }
         }
 
-        public void ChangeConfigXml(string nodePath, string attribute, string newValue, string oldValue)
+        public void ChangeConfiguration(string nodePath, string attribute, string newValue, string oldValue)
         {
-            var doc = LoadConfigDocument();
+            var doc = LoadConfiguration();
 
-            var xmlNodeList = doc.SelectNodes(nodePath);
+            var xmlNodeList = SelectXmlNodes(nodePath, doc);
 
             if (xmlNodeList == null)
                 throw new ArgumentException("nodePath not found", nodePath);
@@ -44,9 +41,51 @@ namespace Configurator
             {
                 try
                 {
-                    node.Attributes[attribute].Value = node.Attributes[attribute].Value.Replace(oldValue, newValue);
+                    SwapOldNewValues(attribute, newValue, oldValue, node);
 
                     doc.Save(_filePath);
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        private static XmlNodeList SelectXmlNodes(string nodePath, XmlNode xmlNode)
+        {
+            if (xmlNode == null) throw new ArgumentNullException("xmlNode");
+            return xmlNode.SelectNodes(nodePath);
+        }
+
+        private static void SwapOldNewValues(string attribute, string newValue, string oldValue, XmlNode node)
+        {
+            if (node.Attributes != null)
+                node.Attributes[attribute].Value = node.Attributes[attribute].Value.Replace(oldValue, newValue);
+        }
+
+        public void ChangeConfiguration(string nodePath, string attribute, string newValue, Regex regex)
+        {
+            var doc = LoadConfiguration();
+
+            var xmlNodeList = SelectXmlNodes(nodePath, doc);
+
+            if (xmlNodeList == null)
+                throw new ArgumentException("nodePath not found", nodePath);
+
+            foreach (XmlNode node in xmlNodeList)
+            {
+                try
+                {
+                    var match = regex.Match(node.Value);
+                    if (match.Success)
+                    {
+                        string oldValue = match.Groups[match.Groups.Count - 1].Value;
+
+                        SwapOldNewValues(attribute, newValue, oldValue, node);
+
+                        doc.Save(_filePath);
+                    }
                 }
                 catch (Exception e)
                 {

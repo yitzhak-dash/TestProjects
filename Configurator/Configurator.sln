@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "Configurator\Configurator.csproj", "{80748393-799C-4BE1-9EA7-219B6E515F3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfiguratorTests", "ConfiguratorTests\ConfiguratorTests.csproj", "{C7D09DBE-F8AE-461D-BF2E-8C8EA48E6E58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator.DomainModel", "Configurator.DominModel\Configurator.DomainModel.csproj", "{2F8CDE97-D4A3-44D5-8F7D-F41C4C5EB996}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -19,6 +23,14 @@ Global
 		{80748393-799C-4BE1-9EA7-219B6E515F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80748393-799C-4BE1-9EA7-219B6E515F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80748393-799C-4BE1-9EA7-219B6E515F3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7D09DBE-F8AE-461D-BF2E-8C8EA48E6E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7D09DBE-F8AE-461D-BF2E-8C8EA48E6E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7D09DBE-F8AE-461D-BF2E-8C8EA48E6E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D09DBE-F8AE-461D-BF2E-8C8EA48E6E58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F8CDE97-D4A3-44D5-8F7D-F41C4C5EB996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F8CDE97-D4A3-44D5-8F7D-F41C4C5EB996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F8CDE97-D4A3-44D5-8F7D-F41C4C5EB996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F8CDE97-D4A3-44D5-8F7D-F41C4C5EB996}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,9 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Practices.Unity;
@@ -23,13 +25,21 @@ namespace Configurator
         {
             var container = new UnityContainer();
 
+           new Parser(new CommandFactory(new XmlConfigProvider(""))).Parse(null).Execute();
+
             if (args == null || !args.Any())
                 return;
             var command = args[0];
 
             //var command = "local";
 
-            var t = GetEndpointAddress().Split(new[] { "://", ":" }, StringSplitOptions.RemoveEmptyEntries)[1];
+            //  var t = GetEndpointAddress().Split(new[] { "://", ":" }, StringSplitOptions.RemoveEmptyEntries)[1];
+
+            Regex rdr = new Regex(@"([a-z\-\.]+)://([a-z0-9\-\.]+)");
+
+            Match mt = rdr.Match("net.tcp://10.0.0.148:6001/UserManageService");
+
+            var t = mt.Groups[mt.Groups.Count - 1].Value;
 
             if (command == "local")
                 ToLocalhost();
