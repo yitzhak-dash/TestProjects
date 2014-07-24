@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ICommand.cs" />
     <Compile Include="ICommandFactory.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="IXmlConfigProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -77,7 +77,7 @@ namespace Configurator
             {
                 try
                 {
-                    var match = regex.Match(node.Value);
+                    var match = regex.Match(node.OuterXml);
                     if (match.Success)
                     {
                         string oldValue = match.Groups[match.Groups.Count - 1].Value;

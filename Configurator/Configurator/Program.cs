@@ -8,105 +8,53 @@ using System.ServiceModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml;
+using Configurator.DomainModel;
 using Microsoft.Practices.Unity;
 
 namespace Configurator
 {
     class Program
     {
+        private static UnityContainer _container;
         private const string ConfigFilePath = "configFilePath";
         private const string Localhost = "localhost";
         private const string Remotehost = "remotehost";
         private const string NodePath = "//system.serviceModel//client//endpoint";
 
+        static void InitContainer()
+        {
+            _container = new UnityContainer();
+
+            string configFilePath = ConfigurationManager.AppSettings[ConfigFilePath];
+
+            _container.RegisterType<IXmlConfigProvider, XmlConfigProvider>(new InjectionConstructor(configFilePath));
+            _container.RegisterType<ICommandFactory, CommandFactory>();
+            _container.RegisterType<IParser, Parser>();
+        }
 
         static void Main(string[] args)
         {
-            var container = new UnityContainer();
+            InitContainer();
 
-           new Parser(new CommandFactory(new XmlConfigProvider(""))).Parse(null).Execute();
+            string[] userInput = null;
 
-            if (args == null || !args.Any())
-                return;
-            var command = args[0];
+            if (args.Any())
+                _container.Resolve<IParser>().Parse(args).Execute();
 
-            //var command = "local";
+            Console.WriteLine("Press X to exit");
 
-            //  var t = GetEndpointAddress().Split(new[] { "://", ":" }, StringSplitOptions.RemoveEmptyEntries)[1];
-
-            Regex rdr = new Regex(@"([a-z\-\.]+)://([a-z0-9\-\.]+)");
-
-            Match mt = rdr.Match("net.tcp://10.0.0.148:6001/UserManageService");
-
-            var t = mt.Groups[mt.Groups.Count - 1].Value;
-
-            if (command == "local")
-                ToLocalhost();
-            if (command == "remote")
-                ToRemotehost();
-        }
-
-        private static void ToRemotehost()
-        {
-            ChangeEndpointAddress(ConfigurationManager.AppSettings[Remotehost], ConfigurationManager.AppSettings[Localhost]);
-        }
-
-        private static void ToLocalhost()
-        {
-            ChangeEndpointAddress(ConfigurationManager.AppSettings[Localhost], ConfigurationManager.AppSettings[Remotehost]);
-
-        }
-
-        public static string GetEndpointAddress()
-        {
-            return LoadConfigDocument().SelectSingleNode(NodePath).Attributes["address"].Value;
-        }
-
-        public static void ChangeEndpointAddress(string newEndpointAddress, string oldEndpointAddress)
-        {
-            // load config document for current assembly
-            XmlDocument doc = LoadConfigDocument();
-
-            foreach (XmlNode node in doc.SelectNodes(NodePath))
+            while (true)
             {
-                if (node == null)
-                    throw new InvalidOperationException("Error. Could not find endpoint node in config file.");
+                Console.Write("finger>>> ");
+                string readLine = Console.ReadLine();
 
-                try
-                {
-                    // select the 'add' element that contains the key
-                    //XmlElement elem = (XmlElement)node.SelectSingleNode(string.Format("//add[@key='{0}']", key));
-                    node.Attributes["address"].Value = node.Attributes["address"].Value.Replace(oldEndpointAddress, newEndpointAddress);
+                if (readLine == "x" || readLine == "X")
+                    break;
 
-                    doc.Save(GetConfigFilePath());
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                if (readLine != null) userInput = readLine.Split(' ');
+
+                _container.Resolve<IParser>().Parse(userInput).Execute();
             }
-        }
-
-        public static XmlDocument LoadConfigDocument()
-        {
-            XmlDocument doc = null;
-            try
-            {
-                doc = new XmlDocument();
-                doc.Load(GetConfigFilePath());
-                return doc;
-            }
-            catch (System.IO.FileNotFoundException e)
-            {
-                throw new Exception("No configuration file found.", e);
-            }
-        }
-
-        private static string GetConfigFilePath()
-        {
-            return ConfigurationManager.AppSettings[ConfigFilePath];
-            //return Assembly.GetExecutingAssembly().Location + ".config";
         }
     }
 

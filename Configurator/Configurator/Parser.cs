@@ -7,7 +7,7 @@ using Configurator.DomainModel;
 
 namespace Configurator
 {
-    public class Parser
+    public class Parser : IParser
     {
         private readonly ICommandFactory _factory;
 
