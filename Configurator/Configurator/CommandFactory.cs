@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +19,8 @@ namespace Configurator
         {
             if (commandStr == "endpoint")
                 return new ChangeEndpointHostCommand(commandArg, _provider);
+            if (commandStr == AddTemplatePartCommand.GetName())
+                return new AddTemplatePartCommand(commandArg);
 
             return new HelpCommand();
         }

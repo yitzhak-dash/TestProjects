@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddTemplatePartCommand.cs" />
     <Compile Include="ChangeEndpointHostCommand.cs" />
     <Compile Include="CommandFactory.cs" />
     <Compile Include="HelpCommand.cs" />

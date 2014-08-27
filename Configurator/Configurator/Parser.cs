@@ -23,7 +23,11 @@ namespace Configurator
             if (args == null || list.Count < 2)
                 return new HelpCommand();
 
-            var command = _factory.Create(list[0], list[1]);
+            var pars = list.ToList();
+
+            pars.RemoveAt(0);
+
+            var command = _factory.Create(list[0], string.Join(" ", pars));
 
             return command;
         }

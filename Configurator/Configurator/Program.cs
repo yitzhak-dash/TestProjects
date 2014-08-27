@@ -17,9 +17,6 @@ namespace Configurator
     {
         private static UnityContainer _container;
         private const string ConfigFilePath = "configFilePath";
-        private const string Localhost = "localhost";
-        private const string Remotehost = "remotehost";
-        private const string NodePath = "//system.serviceModel//client//endpoint";
 
         static void InitContainer()
         {
@@ -45,7 +42,7 @@ namespace Configurator
 
             while (true)
             {
-                Console.Write("finger>>> ");
+                Console.Write("finger>>>");
                 string readLine = Console.ReadLine();
 
                 if (readLine == "x" || readLine == "X")
